@@ -14,6 +14,18 @@ type Example = MyComplexInterface<
   { x: 12; y: 14 }
 >;
 
-type GetPoint<T> = unknown;
+// type GetPoint<T> = T extends {
+//   getPoint: () => infer TPoint;
+// }
+//   ? TPoint
+//   : never;
+
+// OR
+
+type GetPoint<T> = T extends MyComplexInterface<any, any, any, infer TPoint>
+  ? TPoint
+  : never;
+
+type Example2 = GetPoint<Example>;
 
 type tests = [Expect<Equal<GetPoint<Example>, { x: 12; y: 14 }>>];
