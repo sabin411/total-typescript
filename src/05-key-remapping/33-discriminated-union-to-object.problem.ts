@@ -12,7 +12,17 @@ type Route =
   | { route: "/admin"; search: {} }
   | { route: "/admin/users"; search: {} };
 
-type RoutesObject = unknown;
+type KeysUnion = Route["route"];
+
+// Solution_1
+// type RoutesObject = {
+//   [K in KeysUnion]: Extract<Route, { route: K }>["search"];
+// };
+
+// Solution_2
+type RoutesObject = {
+  [R in Route as R["route"]]: R["search"];
+};
 
 type tests = [
   Expect<
@@ -28,5 +38,5 @@ type tests = [
         "/admin/users": {};
       }
     >
-  >,
+  >
 ];

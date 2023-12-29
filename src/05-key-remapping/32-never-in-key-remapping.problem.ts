@@ -8,7 +8,13 @@ interface Example {
   groupId: string;
 }
 
-type OnlyIdKeys<T> = unknown;
+type SearchForId = `${string}${"Id" | "id"}${string}`;
+
+type OnlyIdKeys<T> = {
+  [K in keyof T as K extends SearchForId ? K : never]: T[K];
+};
+
+type Exampole = OnlyIdKeys<Example>;
 
 type tests = [
   Expect<
